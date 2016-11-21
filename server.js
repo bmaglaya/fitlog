@@ -39,12 +39,23 @@ function handleError(res, reason, message, code) {
 	res.status(code || 500).json({"error": message});
 }
 
-// /logs
-//
-// GET  - Find all logs
-// POST - Create a new log
+/* 
+ * "/logs"
+ *
+ * GET: Find all logs
+ * POST: Create a new log
+ *
+ */
 
 app.get("/logs", (req, res) => {
+	db.collection(LOG_COLLECTION).find({}).toArray((err, docs) => {
+		if (err) {
+			handleError(res, err.message, "Failed to get logs.");
+		}
+		else {
+			res.status(200).json(docs);
+		}
+	});
 });
 
 app.post("/logs", (req, res) => {
@@ -65,17 +76,63 @@ app.post("/logs", (req, res) => {
 	});
 });
 
-// /logs/:id
-//
-// GET - Find a single log by ID
-// PUT - Update entire log document
-// DELETE - Delete a log by ID
+/*
+ * "/logs/:id"
+ *
+ * GET: find log by id
+ * PUT: update log by id
+ * DELETE: deletes log by id
+ *
+ */
 
 app.get("/logs/:id", (req, res) => {
+	db.collection(LOG_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, (err, doc) => {
+		if (err) {
+			handleError(res, err.message, "Failed to get log.");
+		}
+		else {
+			res.status(200).json(doc);
+		}
+	});
 });
 
 app.put("/logs/:id", (req, res) => {
+	var updateDoc = req.body;
+	delete updateDoc._id;
+
+	db.collection(LOG_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, updateDoc, (err, doc) => {
+		if (err) {
+			handleError(res, err.message, "Failed to update log.");
+		}
+		else {
+			res.status(204).end();
+		}
+	});
 });
 
 app.delete("/logs/:id", (req, res) => {
+	db.collection(LOG_COLLECTION).deleteOne({_id: new ObjectID(req.params.id)}, (err, result) => {
+		if (err) {
+			handleError(res, err.message, "Failed to delete log.");
+		}
+		else {
+			res.status(204).end();
+		}
+	});
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
