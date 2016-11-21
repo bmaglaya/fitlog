@@ -1,0 +1,20 @@
+{
+  "name": "fitlog",
+  "version": "1.0.0",
+  "description": "An app to record workouts",
+  "author": "",
+  "license": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "node_modules/.bin/mocha --reporter spec",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "chai": "^3.5.0",
+    "express": "4.14.0",
+    "mocha": "^3.1.2",
+    "mongodb": "^2.1.6",
+    "request": "^2.79.0"
+  }
+}
