@@ -51,7 +51,7 @@ app.post("/logs", (req, res) => {
 	var newLog = req.body;
 	newLog.createDate = new Date();
 
-	if(!(req.body.workout)) {
+	if(!(req.body.workout || req.body.notes)) {
 		handleError(res, "Invalid user input", "Must provide workout and notes.", 400);
 	}
 	
