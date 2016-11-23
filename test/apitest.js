@@ -17,8 +17,20 @@ describe("FitLog: API Tests", function() {
 			});
 	});
 	
+	it("should add a single log on /logs POST", function(done) {
+		chai.request(server)
+			.post("/logs")
+			.send({"workout": "Push Day A", "notes": "Shoulders hurt from bench press"})
+			.end(function(err, res) {
+				res.should.have.status(201);
+				res.should.be.json;
+				res.body.should.be.a("object");
+				
+				done();
+			});
+	});
+	
 	it("should list all a single log on /logs/:id GET");
-	it("should add a single log on /logs POST");
 	it("should update a single log on /logs/:id PUT");
 	it("should delete a single log on /logs/:id DELETE");
 });
