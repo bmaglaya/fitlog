@@ -25,7 +25,14 @@ describe("FitLog: API Tests", function() {
 				res.should.have.status(201);
 				res.should.be.json;
 				res.body.should.be.a("object");
-				
+				res.body.should.have.property("SUCCESS");
+				res.body.SUCCESS.should.be.a("object");
+				res.body.SUCCESS.should.have.property("workout");
+				res.body.SUCCESS.should.have.property("notes");
+				res.body.SUCCESS.should.have.property("createDate");
+				res.body.SUCCESS.should.have.property("_id");
+				res.body.SUCCESS.workout.should.equal("Push Day A");
+				res.body.SUCCESS.notes.should.equal("Shoulders hurt from bench press");
 				done();
 			});
 	});
