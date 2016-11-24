@@ -87,7 +87,28 @@ describe("FitLog: API Tests", function() {
 		});
 	});
 	
-	it("should update a single log on /logs/:id PUT");
+	it("should update a single log on /logs/:id PUT", function(done) {
+		chai.request(server)
+			.get("/logs")
+			.end(function(err, res) {
+				chai.request(server)
+					.put("/log/" + res.body[0]._id)
+					.send({"workout": "Lower Body"})
+					.end(function(error, response) {
+						response.should.have.status(204);
+						response.should.be.json;
+						response.body.should.be.a("object");
+						response.body.should.have.property("UPDATED");
+						response.body.UPDATED.should.be.a("object");
+						response.body.UPDATED.should.have.property("workout");
+						response.body.UPDATED.should.have.property("_id");
+						response.body.UPDATED.workout.should.equal("Lower Body");
+						done();
+					});
+			});
+	});
+	
+	
 	it("should delete a single log on /logs/:id DELETE");
 });
 
