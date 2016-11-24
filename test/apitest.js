@@ -1,12 +1,33 @@
 var chai = require("chai");
 var chaiHttp = require("chai-http");
-var server = require("../server");
-var should = chai.should();
+var mongoose = require("mongoose");
 
+var server = require("../server");
+var Workout = require("../app/models/workout");
+
+var should = chai.should();
 chai.use(chaiHttp);
 
 describe("FitLog: API Tests", function() {
 
+	Workout.collection.drop();
+	
+	beforeEach(function(done) {
+		var newLog = new Workout({
+			workout: "Push Day A",
+			notes: ""
+		});
+		
+		newLog.save(function(err) {
+			done();
+		});
+	});
+	
+	afterEach(function(done) {
+		Workout.collection.drop();
+		done();
+	});
+	
 	it("should list all logs on /logs GET", function(done) {
 		chai.request(server)
 			.get("/logs")
