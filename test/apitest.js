@@ -15,7 +15,7 @@ describe("FitLog: API Tests", function() {
 	beforeEach(function(done) {
 		var newLog = new Workout({
 			workout: "Push Day A",
-			notes: ""
+			notes: "shoulder hurts"
 		});
 		
 		newLog.save(function(err) {

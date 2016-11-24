@@ -2,8 +2,6 @@ var express = require("express");
 var router = express.Router();
 var Workout = require("../models/workout");
 
-// LOGS API ROUTES
-
 // Generic error handler used by all endpoints.
 function handleError(res, reason, message, code) {
 	console.log("Error: ", reason);
