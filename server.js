@@ -5,6 +5,9 @@ var mongoose = require("mongoose");
 
 var LOG_COLLECTION = "logs";
 
+// Eliminates mongoose deprecated library warning
+mongoose.Promise = global.Promise
+
 // Connection URL for local dev
 var url = "mongodb://localhost:27017/fitlog";
 

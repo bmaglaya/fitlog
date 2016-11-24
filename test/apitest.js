@@ -29,7 +29,6 @@ describe("FitLog: API Tests", function() {
 				res.body.SUCCESS.should.be.a("object");
 				res.body.SUCCESS.should.have.property("workout");
 				res.body.SUCCESS.should.have.property("notes");
-				res.body.SUCCESS.should.have.property("createDate");
 				res.body.SUCCESS.should.have.property("_id");
 				res.body.SUCCESS.workout.should.equal("Push Day A");
 				res.body.SUCCESS.notes.should.equal("Shoulders hurt from bench press");
@@ -37,7 +36,7 @@ describe("FitLog: API Tests", function() {
 			});
 	});
 	
-	it("should list all a single log on /logs/:id GET");
+	it("should list a single log on /logs/:id GET");
 	it("should update a single log on /logs/:id PUT");
 	it("should delete a single log on /logs/:id DELETE");
 });
