@@ -71,7 +71,7 @@ describe("FitLog: API Tests", function() {
 		
 		newLog.save(function(err, data) {
 			chai.request(server)
-				.get("/log/" + data.id)
+				.get("/logs/" + data.id)
 				.end(function(err, res) {
 					res.should.have.status(200);
 					res.should.be.json;

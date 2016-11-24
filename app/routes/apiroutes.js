@@ -16,18 +16,18 @@ function handleError(res, reason, message, code) {
  *
  */
 
-router.get("/logs", (req, res) => {
-	Workout.find((err, docs) => {
+router.get("/logs", function(req, res) {
+	Workout.find(function(err, logs) {
 		if (err) {
 			handleError(res, err.message, "Failed to get logs.");
 		}
 		else {
-			res.status(200).json(docs);
+			res.status(200).json(logs);
 		}	
 	});
 });
 
-router.post("/logs", (req, res) => {
+router.post("/logs", function(req, res) {
 	var newLog = new Workout({
 		workout: req.body.workout,
 		notes: req.body.notes
@@ -37,7 +37,7 @@ router.post("/logs", (req, res) => {
 		handleError(res, "Invalid user input", "Must provide workout and notes.", 400);
 	}
 	
-	newLog.save((err) => {
+	newLog.save(function(err) {
 		if (err) {
 			handleError(res, err.message,"Failed to create new log.");
 		}
@@ -56,17 +56,15 @@ router.post("/logs", (req, res) => {
  *
  */
 
-router.get("/logs/:id", (req, res) => {
-/*
-		db.collection(LOG_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, (err, doc) => {
-				if (err) {
-						handleError(res, err.message, "Failed to get log.");
-				}
-				else {
-						res.status(200).json(doc);
-				}
-		});
-*/
+router.get("/logs/:id", function(req, res) {
+	Workout.findById(req.params.id, function(err, doc) {
+		if (err) {
+			handleError(res, err.message, "Failed to get requested log.");
+		}
+		else {
+			res.status(200).json(doc);
+		}
+	});
 });
 
 router.put("/logs/:id", (req, res) => {
