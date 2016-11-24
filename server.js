@@ -1,15 +1,13 @@
-var express = require("express");
-var path = require("path");
-var bodyParser = require("body-parser");
-var mongoose = require("mongoose");
+const express = require("express");
+const path = require("path");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
-var LOG_COLLECTION = "logs";
+// Configs mongodb to dev or test db
+var config = require("./config/_config");
 
 // Eliminates mongoose deprecated library warning
 mongoose.Promise = global.Promise
-
-// Connection URL for local dev
-var url = "mongodb://localhost:27017/fitlog";
 
 // routes//
 var routes = require("./app/routes/apiroutes");
@@ -18,16 +16,16 @@ var app = express();
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.json());
 
-// Create a database variable outside of the database connection callback to reuse the connection pool in your app.
-var db;
+// Connection URL to mongodb
+var mongo_URI = config.mongoURI[app.settings.env] || process.env.MONGODB_URI;
 
-mongoose.connect(process.env.MONGODB_URI || url, (err, res) => {
+mongoose.connect(mongo_URI, (err, res) => {
 	if (err) {
 		console.log("Error connecting to database.", err);
 		process.exit(1);
 	}
 	else {
-		console.log("Database connection ready.");
+		console.log("Connected to Database: ", mongo_URI);
 	}
 });
 
