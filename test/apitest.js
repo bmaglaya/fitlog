@@ -11,8 +11,6 @@ var should = chai.should();
 chai.use(chaiHttp);
 
 describe("FitLog: API Tests", function() {
-
-	Workout.collection.drop();
 	
 	beforeEach(function(done) {
 		var newLog = new Workout({
@@ -36,6 +34,12 @@ describe("FitLog: API Tests", function() {
 			.end(function(err, res) {
 				res.should.have.status(200);
 				res.should.be.json
+				res.body.should.be.a("array");
+				res.body[0].should.have.property("_id");
+				res.body[0].should.have.property("workout");
+				res.body[0].should.have.property("notes");
+				res.body[0].workout.should.equal("Push Day A");
+				res.body[0].notes.should.equal("shoulder hurts");
 				done();
 			});
 	});
