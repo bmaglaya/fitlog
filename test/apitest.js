@@ -109,7 +109,24 @@ describe("FitLog: API Tests", function() {
 	});
 	
 	
-	it("should delete a single log on /logs/:id DELETE");
+	it("should delete a single log on /logs/:id DELETE", function(done) {
+		chai.request(server)
+			.get("/logs")
+			.end(function(err, res) {
+				chai.request(server)
+				.delete("/logs/" + res.body[0]._id)
+				.end(function(error, response) {
+					response.should.have.status(200);
+					response.should.be.json;
+					response.body.should.be.a("object");
+					response.body.should.have.property("REMOVED");
+					response.body.REMOVED.should.be.a("object");
+					response.body.REMOVED.should.have.property("workout");
+					response.body.REMOVED.should.have.property("_id");
+					done();
+				});
+			});
+	});
 });
 
 
