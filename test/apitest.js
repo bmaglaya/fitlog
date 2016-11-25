@@ -92,10 +92,10 @@ describe("FitLog: API Tests", function() {
 			.get("/logs")
 			.end(function(err, res) {
 				chai.request(server)
-					.put("/log/" + res.body[0]._id)
+					.put("/logs/" + res.body[0]._id)
 					.send({"workout": "Lower Body"})
 					.end(function(error, response) {
-						response.should.have.status(204);
+						response.should.have.status(200);
 						response.should.be.json;
 						response.body.should.be.a("object");
 						response.body.should.have.property("UPDATED");

@@ -67,20 +67,21 @@ router.get("/logs/:id", function(req, res) {
 	});
 });
 
-router.put("/logs/:id", (req, res) => {
-/*
-		var updateDoc = req.body;
-		delete updateDoc._id;
-
-		db.collection(LOG_COLLECTION).updateOne({_id: new ObjectID(req.params.id)}, updateDoc, (err, doc) => {
-				if (err) {
-						handleError(res, err.message, "Failed to update log.");
-				}
-				else {
-						res.status(204).end();
-				}
+router.put("/logs/:id", function(req, res) {
+	Workout.findById({_id: req.params.id}, function(err, log) {
+		if (err) {
+			handleError(res, err.message, "Failed to update log.");
+		}
+		
+		Object.assign(log, req.body).save(function(err, log) {
+			if (err) {
+				handleError(res, err.message, "Failed to update log.");
+			}
+			else {
+				res.status(200).json({"UPDATED": log});
+			}
 		});
-*/
+	});
 });
 
 router.delete("/logs/:id", (req, res) => {
