@@ -49,7 +49,7 @@ describe("FitLog: API Tests", function() {
 			.post("/logs")
 			.send({"workout": "Push Day A", "notes": "Shoulders hurt from bench press"})
 			.end(function(err, res) {
-				res.should.have.status(201);
+				res.should.have.status(200);
 				res.should.be.json;
 				res.body.should.be.a("object");
 				res.body.should.have.property("SUCCESS");
@@ -123,6 +123,7 @@ describe("FitLog: API Tests", function() {
 					response.body.REMOVED.should.be.a("object");
 					response.body.REMOVED.should.have.property("workout");
 					response.body.REMOVED.should.have.property("_id");
+					response.body.REMOVED.workout.should.equal("Push Day A");
 					done();
 				});
 			});

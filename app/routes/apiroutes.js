@@ -2,7 +2,19 @@ const express = require("express");
 var router = express.Router();
 var Workout = require("../models/workout");
 
-// Generic error handler used by all endpoints.
+/*
+ *	API Routes
+ */
+router.get("/logs", findAllLogs);
+router.post("/logs", addNewLog);
+
+router.get("/logs/:id", findLog);
+router.put("/logs/:id", updateLog);
+router.delete("/logs/:id", deleteLog);
+
+/*
+ *	Generic error handler used by all endpoints.
+ */
 function handleError(res, reason, message, code) {
 	console.log("Error: ", reason);
 	res.status(code || 500).json({"error": message});
@@ -16,36 +28,29 @@ function handleError(res, reason, message, code) {
  *
  */
 
-router.get("/logs", function(req, res) {
+function findAllLogs(req, res) {
 	Workout.find(function(err, logs) {
 		if (err) {
 			handleError(res, err.message, "Failed to get logs.");
 		}
 		else {
-			res.status(200).json(logs);
+			res.json(logs);
 		}	
 	});
-});
+}
 
-router.post("/logs", function(req, res) {
-	var newLog = new Workout({
-		workout: req.body.workout,
-		notes: req.body.notes
-	});
-
-	if(!(req.body.workout || req.body.notes)) {
-		handleError(res, "Invalid user input", "Must provide workout and notes.", 400);
-	}
+function addNewLog(req, res) {
+	var newLog = new Workout(req.body);
 	
 	newLog.save(function(err) {
 		if (err) {
 			handleError(res, err.message,"Failed to create new log.");
 		}
 		else {
-			res.status(201).json({"SUCCESS": newLog});
+			res.json({"SUCCESS": newLog});
 		}
 	});	
-});
+}
 
 /*
  * "/logs/:id"
@@ -56,18 +61,18 @@ router.post("/logs", function(req, res) {
  *
  */
 
-router.get("/logs/:id", function(req, res) {
-	Workout.findById(req.params.id, function(err, doc) {
+function findLog(req, res) {
+	Workout.findById(req.params.id, function(err, log) {
 		if (err) {
 			handleError(res, err.message, "Failed to get requested log.");
 		}
 		else {
-			res.status(200).json(doc);
+			res.json(log);
 		}
 	});
-});
+}
 
-router.put("/logs/:id", function(req, res) {
+function updateLog(req, res) {
 	Workout.findById({_id: req.params.id}, function(err, log) {
 		if (err) {
 			handleError(res, err.message, "Failed to find log.");
@@ -78,13 +83,13 @@ router.put("/logs/:id", function(req, res) {
 				handleError(res, err.message, "Failed to update log.");
 			}
 			else {
-				res.status(200).json({"UPDATED": log});
+				res.json({"UPDATED": log});
 			}
 		});
 	});
-});
+}
 
-router.delete("/logs/:id", (req, res) => {
+function deleteLog(req, res) {
 	Workout.findById(req.params.id, function(err, log) {
 		if (err) {
 			handleError(res, err.message, "Cannot find requested log.");
@@ -95,11 +100,11 @@ router.delete("/logs/:id", (req, res) => {
 					handleError(res, err.message, "Failed to delete log.");
 				}
 				else {
-					res.status(200).json({"REMOVED": log});
+					res.json({"REMOVED": log});
 				}
 			});
 		}
 	});
-});
+}
 
 module.exports = router;
