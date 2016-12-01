@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const morgan = require("morgan");
 
 // Configs mongodb to dev or test db
 var config = require("./config/_config");
@@ -13,7 +14,9 @@ mongoose.Promise = global.Promise
 var routes = require("./app/routes/apiroutes");
 
 var app = express();
+
 app.use(express.static(__dirname + "/public"));
+app.use(morgan("dev"));
 app.use(bodyParser.json());
 
 // Connection URL to mongodb
@@ -39,21 +42,4 @@ var server = app.listen(process.env.PORT || 8080, () => {
 });
 	
 module.exports = server;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
