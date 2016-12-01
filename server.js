@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
+const colors = require("colors");
 const mongoose = require("mongoose");
 const morgan = require("morgan");
 
@@ -16,7 +17,7 @@ var routes = require("./app/routes/apiroutes");
 var app = express();
 
 app.use(express.static(__dirname + "/public"));
-app.use(morgan("dev"));
+//app.use(morgan("dev"));
 app.use(bodyParser.json());
 
 // Connection URL to mongodb
@@ -24,11 +25,11 @@ var mongo_URI = config.mongoURI[app.settings.env] || process.env.MONGODB_URI;
 
 mongoose.connect(mongo_URI, (err, res) => {
 	if (err) {
-		console.log("Error connecting to database.", err);
+		console.log("Error connecting to database.".red, err);
 		process.exit(1);
 	}
 	else {
-		console.log("Connected to Database: ", mongo_URI);
+		console.log("Connected to Database: ".green, mongo_URI);
 	}
 });
 
@@ -38,7 +39,7 @@ app.use("/", routes);
 // Initialize the app.
 var server = app.listen(process.env.PORT || 8080, () => {
     var port = server.address().port;
-    console.log("App now running on port", port);
+    console.log("App now running on port".rainbow, port);
 });
 	
 module.exports = server;
