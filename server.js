@@ -17,16 +17,15 @@ var routes = require("./app/routes/apiroutes");
 var app = express();
 
 app.use(express.static(__dirname + "/public"));
-//app.use(morgan("dev"));
 app.use(bodyParser.json());
+//app.use(morgan("dev"));
 
 // Connection URL to mongodb
 var mongo_URI = config.mongoURI[app.settings.env] || process.env.MONGODB_URI;
 
-mongoose.connect(mongo_URI, (err, res) => {
+mongoose.connect(mongo_URI, (err) => {
 	if (err) {
-		console.log("Error connecting to database.".red, err);
-		process.exit(1);
+		console.log("Error connecting to database. Run 'mongod'.".red, err);
 	}
 	else {
 		console.log("Connected to Database: ".green, mongo_URI);
